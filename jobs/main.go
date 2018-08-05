@@ -61,15 +61,15 @@ func main() {
 
 	//run jobs
 	go func() {
+		limiter := time.Tick(100 * time.Millisecond)
 		for {
 			select {
 			case <-stopCh:
 				fmt.Println("Exit jobs goroutine")
 				return
-			default:
+			case <-limiter:
 				f := Fib{n: randInt(10, 20)}
 				jobs <- f
-				time.Sleep(100 * time.Millisecond)
 			}
 
 		}
